@@ -1,3 +1,3 @@
-class Player:
+class Computer:
     def __init__(self) -> None:
         pass
