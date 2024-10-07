@@ -3,7 +3,7 @@ class Player:
         pass
 
 
-def choose(self):
-    pass
+    def choose(self):
+        pass
 
 
