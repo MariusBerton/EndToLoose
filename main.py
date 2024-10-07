@@ -1,3 +1,3 @@
-from Cartes import Cartes
-from Computer import Computer
+from Cards import Cards
 from Player import Player
+from Computer import Computer
