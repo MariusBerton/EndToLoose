@@ -1,3 +1,8 @@
+from random import randint
+
 class Coin:
     def __init__(self):
-        pass
+        self.faces = 2
+    
+    def flip(self):
+        return randnt(1, self.faces) == 1
