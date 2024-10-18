@@ -5,5 +5,3 @@ class Player:
 
     def choose(self):
         pass
-
-
