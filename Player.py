@@ -1,8 +1,7 @@
 from random import randint
 
 class Player:
-    def __init__(self, name:str, deck:list) -> None:
-        self.name = name
+    def __init__(self, deck:list) -> None:
         self.hand = []
         self.discard_pile = []
         self.deck = deck
