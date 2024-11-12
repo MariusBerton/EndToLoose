@@ -15,5 +15,10 @@ def first():
     return priority
 
     
-def turn():
-    pass
+def turn(player, computer, priority):
+    if priority == True:
+        player.act
+        computer.act
+    else:
+        computer.act
+        player.act

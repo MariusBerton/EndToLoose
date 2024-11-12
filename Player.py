@@ -6,6 +6,10 @@ class Player:
         self.discard_pile = []
         self.deck = deck
 
+    
+    def act(self):
+        pass # en gros c'est ton tour, tu choisis quoi faire
+
 
     def select(self):
         pass # besion de pygame (donne des infos sur la carte sur laquelle le curseur est)
@@ -25,6 +29,3 @@ class Player:
         card = self.deck[-1]
         self.hand.append(card)
         self.deck.pop(-1)
-
-
-    # draw et discard fonctionnent

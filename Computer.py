@@ -7,3 +7,21 @@ class Computer:
         self.deck = deck
         self.hand = []
         self.discard_pile = []
+
+
+    def act(self):
+        chose(self.hand) # à évoluer
+
+
+    def use(self):
+        pass  # besion d'avancer sur Cards
+
+    def discard(self):
+        card = randint(0, len(self.hand) - 1)
+        self.discard_pile.append(self.hand[card])
+        self.hand.pop(card)
+
+    def draw(self):
+        card = self.deck[-1]
+        self.hand.append(card)
+        self.deck.pop(-1)
