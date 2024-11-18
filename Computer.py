@@ -16,10 +16,12 @@ class Computer:
     def use(self):
         pass  # besion d'avancer sur Cards
 
+
     def discard(self):
         card = randint(0, len(self.hand) - 1)
         self.discard_pile.append(self.hand[card])
         self.hand.pop(card)
+        
 
     def draw(self):
         card = self.deck[-1]
