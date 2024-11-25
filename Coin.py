@@ -7,4 +7,4 @@ class Coin:
         
     
     def flip(self):
-        return randnt(1, self.faces) == 1
+        return randint(1, self.faces) == 1

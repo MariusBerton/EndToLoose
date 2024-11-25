@@ -10,7 +10,7 @@ class Computer:
 
 
     def act(self):
-        chose(self.hand) # à évoluer
+        choose(self.hand) # à évoluer
 
 
     def use(self):
