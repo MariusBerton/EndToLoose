@@ -4,6 +4,13 @@ from Computer import Computer
 from random import randint, choice
 
 
+class Game():
+
+    def __init__(self, deck_player, deck_computer, behaviour):
+        self.player = Player(deck_player)
+        self.computer = Computer(deck_computer, behaviour)
+
+
 def first():
     players = ["player", "computer"]
     if choice(players) == "player":
