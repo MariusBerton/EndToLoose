@@ -10,22 +10,8 @@ class Game():
         self.player = Player(deck_player)
         self.computer = Computer(deck_computer, behaviour)
 
-
-def first():
-    players = ["player", "computer"]
-    if choice(players) == "player":
-        print("You start")
-        priority = True
-    else:
-        print("The opponent starts")
-        priority = False
-    return priority
-
-
-def turn(player, computer, priority):
-    if priority == True:
-        player.act()
-        computer.act()
-    else:
-        computer.act()
-        player.act()
+    def end(self):
+        if self.player.deck == []:
+            print("You lost")
+        elif self.computer.deck == []:
+            print("you won")
