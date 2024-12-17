@@ -1,7 +1,7 @@
 from Cards import Cards
 from Player import Player
 from Computer import Computer
-from random import randint, choice
+from random import randint, shuffle
 
 
 class Game():
@@ -10,22 +10,35 @@ class Game():
         self.player = Player(deck_player)
         self.computer = Computer(deck_computer, behaviour)
 
-    def end(self):
-        if self.player.hand == [] and self.computer.hand == []:
-            print("TIE")
-        elif self.player.hand == []:
-            print("YOU LOST")
-        elif self.computer.hand == []:
-            print("YOU WON")
+    def setup(self):
+        shuffle(self.player.deck)
+        shuffle(self.computer.deck)
+        for i in range(5):
+            self.player.draw()
+            self.computer.draw()
 
-    def __repr__(self):
-        return "Hand : {}\n".format(self.player.hand)
+    def playerTurn(self):
+        print("Your turn")
+        print("Choose a card")
+        card = int(input(f"{self.player.hand}\n"))
+        print(self.player.hand[card-1])
+
+    def computerTurn(self):
+        print("The opponent's turn")
+        print("Choosing a card")
+        print(self.computer.hand[randint(0, len(self.computer.hand)-1)])
+
+    def end(self):
+        return self.player.hand == [] or self.computer == []
 
     def exchange(self):
         self.player.hand, self.computer.hand = self.computer.hand, self.player.hand
 
+    def __repr__(self):
+        return "Hand : {}\n".format(self.player.hand)
 
-game = Game([
+
+starting_deck = [
     Cards("nothing", 0),
     Cards("nothing", 0),
     Cards("nothing", 0),
@@ -61,55 +74,10 @@ game = Game([
     Cards("reveal", 6),
     Cards("reveal", 7),
     Cards("exchange", 8)
-],
-    [
-    Cards("nothing", 0),
-    Cards("nothing", 0),
-    Cards("nothing", 0),
-    Cards("nothing", 0),
-    Cards("nothing", 0),
-    Cards("nothing", 0),
-    Cards("nothing", 0),
-    Cards("nothing", 0),
-    Cards("nothing", 0),
-    Cards("draw1", 1),
-    Cards("draw1", 1),
-    Cards("draw1", 1),
-    Cards("draw1", 1),
-    Cards("draw1", 1),
-    Cards("draw1", 1),
-    Cards("draw2", 2),
-    Cards("draw2", 2),
-    Cards("draw2", 2),
-    Cards("draw2", 2),
-    Cards("draw2", 2),
-    Cards("draw3", 3),
-    Cards("draw3", 3),
-    Cards("discard1", 4),
-    Cards("discard1", 4),
-    Cards("discard1", 4),
-    Cards("discard1", 4),
-    Cards("discard1", 4),
-    Cards("discard2", 5),
-    Cards("discard2", 5),
-    Cards("discard2", 5),
-    Cards("reveal", 6),
-    Cards("reveal", 6),
-    Cards("reveal", 6),
-    Cards("reveal", 7),
-    Cards("exchange", 8)
-],
-    1
-)
+]
 
-game.player.shuffle_deck()
-game.computer.shuffle_deck()
+game = Game(starting_deck, starting_deck, 1)
 
-print(game)
-for b in range(5):
-    game.player.draw()
-print(game)
-for t in range(2):
-    game.computer.draw()
-game.exchange()
-print(game)
+game.setup()
+game.playerTurn()
+game.computerTurn()
