@@ -1,4 +1,4 @@
-from random import randint, choice
+from random import randint, shuffle
 
 
 class Computer:
@@ -17,3 +17,6 @@ class Computer:
         discarded = randint(0, len(self.hand) - 1)
         self.discard_pile.append(self.hand[discarded])
         self.hand.pop(discarded)
+
+    def shuffle_deck(self):
+        shuffle(self.deck)

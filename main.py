@@ -18,11 +18,8 @@ class Game():
         elif self.computer.hand == []:
             print("YOU WON")
 
-    def __str__(self):
-        hand = []
-        for i in self.player.hand:
-            hand.append(repr(i))
-        return str(hand)
+    def __repr__(self):
+        return "Hand : {}\n".format(self.player.hand)
 
     def exchange(self):
         self.player.hand, self.computer.hand = self.computer.hand, self.player.hand
@@ -104,6 +101,9 @@ game = Game([
 ],
     1
 )
+
+game.player.shuffle_deck()
+game.computer.shuffle_deck()
 
 print(game)
 for b in range(5):

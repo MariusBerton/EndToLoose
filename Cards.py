@@ -6,8 +6,8 @@ class Cards:
         self.name = name
         self.id = id
 
-    def __str__(self):
-        return f"id : {self.id} | name : {self.name}"
+    def __repr__(self):
+        return "id : {} | name : {}\n".format(self.id, self.name)
 
 
 cartes = {
