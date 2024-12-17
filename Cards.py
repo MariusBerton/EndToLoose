@@ -6,14 +6,18 @@ class Cards:
         self.name = name
         self.id = id
 
+    def __str__(self):
+        return f"id : {self.id} | name : {self.name}"
+
 
 cartes = {
-    "nothing": Cards("nothing", 0),
+    "nothing": Cards("show", 0),
     "draw_1": Cards("draw1", 1),
     "draw_2": Cards("draw2", 2),
     "draw_3": Cards("draw3", 3),
     "discard_1": Cards("discard1", 4),
     "discard_3": Cards("discard2", 5),
-    "reveal": Cards("reveal", 6),
-    "exchange": Cards("exchange", 7)
+    "show": Cards("reveal", 6),
+    "reveal": Cards("reveal", 7),
+    "exchange": Cards("exchange", 8)
 }
