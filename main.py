@@ -25,10 +25,12 @@ class Game():
             print(f"{coin} !")
             if coin == choice:
                 print("You start")
+                return True
             else:
                 print("The opponent starts")
+                return False
         else:
-            self.order()
+            return self.order()
 
     def playerTurn(self):
         print("Your turn")
@@ -41,7 +43,7 @@ class Game():
         print("Choosing a card")
         print(self.computer.hand[randint(0, len(self.computer.hand)-1)])
 
-    def end(self):
+    def isHandEmpty(self):
         return self.player.hand == [] or self.computer == []
 
     def exchange(self):
@@ -92,5 +94,12 @@ starting_deck = [
     Cards("exchange", 8)
 ]
 
-game = Game(starting_deck, starting_deck, 1)
-game.order()
+
+def launch_game():
+    game = Game(starting_deck, starting_deck, 1)
+    game.setup()
+    turn_order = game.order()
+    if turn_order == True:
+        game.playerTurn()
+    else:
+        game.computerTurn()

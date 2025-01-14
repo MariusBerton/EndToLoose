@@ -7,10 +7,6 @@ class Player:
         self.discard_pile = []
         self.deck = deck
 
-    def act(self, card):
-        if card.id < 4:
-            self.draw()
-
     def draw(self):
         card = self.deck[-1]
         self.hand.append(card)
