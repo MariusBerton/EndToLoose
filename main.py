@@ -1,7 +1,7 @@
 from Cards import Cards
 from Player import Player
 from Computer import Computer
-from random import randint, shuffle
+from random import randint, shuffle, choice
 
 
 class Game():
@@ -16,6 +16,19 @@ class Game():
         for i in range(5):
             self.player.draw()
             self.computer.draw()
+
+    def order(self):
+        choice = input("head or tails ?\n")
+        if choice == "head" or choice == "tails":
+            print("Flipping the coin")
+            coin = self.flip()
+            print(f"{coin} !")
+            if coin == choice:
+                print("You start")
+            else:
+                print("The opponent starts")
+        else:
+            self.order()
 
     def playerTurn(self):
         print("Your turn")
@@ -33,6 +46,9 @@ class Game():
 
     def exchange(self):
         self.player.hand, self.computer.hand = self.computer.hand, self.player.hand
+
+    def flip(self):
+        return choice(["head", "tails"])
 
     def __repr__(self):
         return "Hand : {}\n".format(self.player.hand)
@@ -77,7 +93,4 @@ starting_deck = [
 ]
 
 game = Game(starting_deck, starting_deck, 1)
-
-game.setup()
-game.playerTurn()
-game.computerTurn()
+game.order()
