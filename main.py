@@ -70,7 +70,7 @@ for i in range(5):
 for i in range(3):
     starting_deck.append(Cards("discard2", 5))
 for i in range(3):
-    starting_deck.append(Cards("reveal", 6))
+    starting_deck.append(Cards("show", 6))
 starting_deck.append(Cards("reveal", 7))
 starting_deck.append(Cards("exchange", 8))
 
