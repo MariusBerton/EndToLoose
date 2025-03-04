@@ -1,4 +1,5 @@
 from random import randint
+from Cards import Cards
 
 
 class Computer:
@@ -17,3 +18,18 @@ class Computer:
         discarded = randint(0, len(self.hand) - 1)
         self.discard_pile.append(self.hand[discarded])
         self.hand.pop(discarded)
+
+    def choice(self):
+        if self.behaviour == 2 and len(self.hand) > 2:
+            for card in self.hand:
+                if card.id == 4 or card.id == 5:
+                    card.use()
+                    return card.discard()
+        elif self.behaviour == 3:
+            for card in self.hand:
+                if card.id == 2 or card.id == 3:
+                    card.use()
+                    return card.discard()
+        else:
+            card = self.hand[randint(0, len(self.computer.hand)-1)]
+            return card.use()
