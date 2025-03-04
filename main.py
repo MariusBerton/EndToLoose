@@ -41,7 +41,7 @@ class Game():
     def computerTurn(self):
         print("The opponent's turn")
         print("Choosing a card")
-        print(self.computer.hand[randint(0, len(self.computer.hand)-1)])
+        print(self.computer.choice())
 
     def isHandEmpty(self):
         return self.player.hand == [] or self.computer == []
@@ -56,43 +56,23 @@ class Game():
         return "Hand : {}\n".format(self.player.hand)
 
 
-starting_deck = [
-    Cards("nothing", 0),
-    Cards("nothing", 0),
-    Cards("nothing", 0),
-    Cards("nothing", 0),
-    Cards("nothing", 0),
-    Cards("nothing", 0),
-    Cards("nothing", 0),
-    Cards("nothing", 0),
-    Cards("nothing", 0),
-    Cards("draw1", 1),
-    Cards("draw1", 1),
-    Cards("draw1", 1),
-    Cards("draw1", 1),
-    Cards("draw1", 1),
-    Cards("draw1", 1),
-    Cards("draw2", 2),
-    Cards("draw2", 2),
-    Cards("draw2", 2),
-    Cards("draw2", 2),
-    Cards("draw2", 2),
-    Cards("draw3", 3),
-    Cards("draw3", 3),
-    Cards("discard1", 4),
-    Cards("discard1", 4),
-    Cards("discard1", 4),
-    Cards("discard1", 4),
-    Cards("discard1", 4),
-    Cards("discard2", 5),
-    Cards("discard2", 5),
-    Cards("discard2", 5),
-    Cards("reveal", 6),
-    Cards("reveal", 6),
-    Cards("reveal", 6),
-    Cards("reveal", 7),
-    Cards("exchange", 8)
-]
+starting_deck = []
+for i in range(9):
+    starting_deck.append(Cards("nothing", 0))
+for i in range(6):
+    starting_deck.append(Cards("draw1", 1))
+for i in range(5):
+    starting_deck.append(Cards("draw2", 2))
+for i in range(2):
+    starting_deck.append(Cards("draw3", 3))
+for i in range(5):
+    starting_deck.append(Cards("discard1", 4))
+for i in range(3):
+    starting_deck.append(Cards("discard2", 5))
+for i in range(3):
+    starting_deck.append(Cards("reveal", 6))
+starting_deck.append(Cards("reveal", 7))
+starting_deck.append(Cards("exchange", 8))
 
 
 def launch_game():

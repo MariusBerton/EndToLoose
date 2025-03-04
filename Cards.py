@@ -3,6 +3,11 @@ class Cards:
         self.name = name
         self.id = id
 
+    def use(self):
+        if self.id == 0:
+            pass
+        elif self.id > 0 and self.id < 4:
+
     def __repr__(self):
         return "id : {} | name : {}\n".format(self.id, self.name)
 
