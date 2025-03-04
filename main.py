@@ -27,6 +27,7 @@ BLUE = (17, 50, 67, 255)
 
 # les images de cartes
 
+
 def load_card_images():
     if not os.path.exists(ASSETS_DIR):
         print(
@@ -132,14 +133,6 @@ def display_home_screen():
         pygame.display.update()
 
 
-
-
-
-
-
-
-
-
 class Game():
 
     def __init__(self, deck_player: list, deck_computer: list, behaviour: int):
@@ -153,20 +146,20 @@ class Game():
             self.player.draw()
             self.computer.draw()
 
-    def order(self):
-        choice = input("head or tails ?\n")
-        if choice == "head" or choice == "tails":
-            print("Flipping the coin")
-            coin = self.flip()
-            print(f"{coin} !")
-            if coin == choice:
-                print("You start")
-                return True
-            else:
-                print("The opponent starts")
-                return False
-        else:
-            return self.order()
+    # def order(self):
+    #     choice = input("head or tails ?\n")
+    #     if choice == "head" or choice == "tails":
+    #         print("Flipping the coin")
+    #         coin = self.flip()
+    #         print(f"{coin} !")
+    #         if coin == choice:
+    #             print("You start")
+    #             return True
+    #         else:
+    #             print("The opponent starts")
+    #             return False
+    #     else:
+    #         return self.order()
 
     def playerTurn(self):
         print("Your turn")
@@ -192,54 +185,46 @@ class Game():
         return "Hand : {}\n".format(self.player.hand)
 
 
+global back_image  # backcard
+card_images = load_card_images()
+back_image = pygame.transform.scale(load_back_image(), (120, 150))
+
+
 starting_deck = []
 for i in range(9):
-    starting_deck.append(Cards("nothing", 0))
+    starting_deck.append(Cards("nothing", 0, card_images[0]))
 for i in range(6):
-    starting_deck.append(Cards("draw1", 1))
+    starting_deck.append(Cards("draw1", 1, card_images[1]))
 for i in range(5):
-    starting_deck.append(Cards("draw2", 2))
+    starting_deck.append(Cards("draw2", 2, card_images[2]))
 for i in range(2):
-    starting_deck.append(Cards("draw3", 3))
+    starting_deck.append(Cards("draw3", 3, card_images[3]))
 for i in range(5):
-    starting_deck.append(Cards("discard1", 4))
+    starting_deck.append(Cards("discard1", 4, card_images[4]))
 for i in range(3):
-    starting_deck.append(Cards("discard2", 5))
+    starting_deck.append(Cards("discard2", 5, card_images[5]))
 for i in range(3):
-    starting_deck.append(Cards("show", 6))
-starting_deck.append(Cards("reveal", 7))
-starting_deck.append(Cards("exchange", 8))
+    starting_deck.append(Cards("show", 6, card_images[6]))
+starting_deck.append(Cards("reveal", 7, card_images[7]))
+starting_deck.append(Cards("exchange", 8, card_images[8]))
 
 
 def launch_game():
     game = Game(starting_deck, starting_deck, 1)
     game.setup()
-    turn_order = game.order()
-    if turn_order == True:
-        game.playerTurn()
-    else:
-        game.computerTurn()
+    # turn_order = game.order()
+    # if turn_order == True:
+    #     game.playerTurn()
+    # else:
+    #     game.computerTurn()
 
 
 # Boucle principale
 def main():
     display_home_screen()  # affiche le home
 
-    global back_image  # backcard
-    card_images = load_card_images()
-    back_image = pygame.transform.scale(load_back_image(), (120, 150))
-
-    deck1 = [Cards(f"Carte {i+1}", card_images[i])
-             for i in range(len(card_images))]
-    random.shuffle(deck1)
-
-    deck2 = [Cards(f"Carte {i+1}", card_images[i])
-             for i in range(len(card_images))]
-    random.shuffle(deck2)
-
-    # Cartes des joueurs
-    player1card = deck1[:5]
-    player2card = deck2[:5]
+    game = Game(starting_deck, starting_deck, 1)
+    game.setup()
 
     # emplacements des cartes du joueurs
     player1slots = [(280 + i * 150, 50) for i in range(5)]
@@ -254,7 +239,7 @@ def main():
 
         # dessine emplacements Joueur 1 (adversaire)
         draw_card_slot(1100, 50, 120, 150, image=back_image)
-        for i, _ in enumerate(player1card):
+        for i, _ in enumerate(game.player.hand):
             draw_card_slot(
                 player1slots[i][0], player1slots[i][1], 120, 150, image=back_image)
 
@@ -265,7 +250,7 @@ def main():
 
         # dessiner emplacements Joueur 2 (nous)
         draw_card_slot(60, 520, 120, 150, image=back_image)
-        for i, carte in enumerate(player2card):
+        for i, carte in enumerate(game.computer.hand):
             carte.draw(player2slots[i][0], player2slots[i][1])
 
         # Gestion des événements
@@ -275,11 +260,11 @@ def main():
                 sys.exit()
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 clicked_card, nouvelle_carte = handle_card_click(
-                    player2card, middle_slot, deck1)
+                    game.computer.hand, middle_slot, game.player.deck)
                 if clicked_card:
                     middle_card = clicked_card
                     if nouvelle_carte:
-                        player2card.append(nouvelle_carte)
+                        game.computer.hand.append(nouvelle_carte)
 
         pygame.display.update()
 
