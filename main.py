@@ -57,25 +57,16 @@ def load_back_image():
     return pygame.image.load(back_path)
 
 
-# def draw_card_slot(x, y, width, height, text="", color=None, image=None):
-#     if color:
-#         pygame.draw.rect(SCREEN, color, (x, y, width, height), 3)
-#     if text:
-#         font = pygame.font.Font(None, 36)
-#         label = font.render(text, True, WHITE)
-#         SCREEN.blit(label, (x + 15, y + 15))
-#     if image:
-#         SCREEN.blit(image, (x, y))
-
-
 def draw_card_slot(x, y, width, height, image=None, is_hovered=False):
     if image:
         if is_hovered:
             enlarged_image = pygame.transform.scale(
                 image, (280, 350))  # Agrandir
-            SCREEN.blit(enlarged_image, (x - 100, y - 200))  # Décaler légèrement
+            # Décaler légèrement
+            SCREEN.blit(enlarged_image, (x - 100, y - 200))
         else:
             SCREEN.blit(image, (x, y))
+
 
 def display_home_screen():
     font_menu = os.path.join(ASSETS_DIR, "SHOWG.TTF")
@@ -154,32 +145,6 @@ class Game():
             self.player.draw()
             self.computer.draw()
 
-    # def order(self):
-    #     choice = input("head or tails ?\n")
-    #     if choice == "head" or choice == "tails":
-    #         print("Flipping the coin")
-    #         coin = self.flip()
-    #         print(f"{coin} !")
-    #         if coin == choice:
-    #             print("You start")
-    #             return True
-    #         else:
-    #             print("The opponent starts")
-    #             return False
-    #     else:
-    #         return self.order()
-
-    # def playerTurn(self):
-    #     print("Your turn")
-    #     print("Choose a card")
-    #     card = int(input(f"{self.player.hand}\n"))
-    #     print(self.player.hand[card-1])
-
-    # def computerTurn(self):
-    #     print("The opponent's turn")
-    #     print("Choosing a card")
-    #     print(self.computer.choice())
-
     def use(self, user, card: Cards):
         if card.id < 4 and card.id > 0:
             for i in range(card.id):
@@ -239,59 +204,68 @@ def launch_game():
 
 # Boucle principale
 def main():
-    display_home_screen()  
+    display_home_screen()
 
     game = Game(starting_deck, starting_deck, 1)
     game.setup()
 
-    player1slots = [(280 + i * 50, 50) for i in range(len(game.player.hand))]
-    player2slots = [(280 + i * 50, 520) for i in range(len(game.computer.hand))]
+    # Calculate card slots for player and computer
+    player1slots = [(280 + i * 130, 50) for i in range(len(game.player.hand))]
+    player2slots = [(280 + i * 130, 520)
+                    for i in range(len(game.computer.hand))]
 
     middle_slot = (585, 300)
     middle_card = None
-    
 
     while True:
         SCREEN.fill((0, 0, 0))
 
         mouse_x, mouse_y = pygame.mouse.get_pos()
 
+        # Draw player's cards at updated slots
         draw_card_slot(1100, 50, 120, 150, image=back_image)
+        if len(game.player.hand) > 0:
+            player1slots = [(280 + i * 130, 50)
+                            for i in range(len(game.player.hand))]
         for i, _ in enumerate(game.player.hand):
             is_hovered = pygame.Rect(
-               player1slots[i][0], player1slots[i][1], 120, 150).collidepoint(mouse_x, mouse_y)
+                player1slots[i][0], player1slots[i][1], 120, 150).collidepoint(mouse_x, mouse_y)
             draw_card_slot(player1slots[i][0], player1slots[i][1],
-                          120, 150, image=back_image, is_hovered=is_hovered)
-           
+                           120, 150, image=back_image, is_hovered=is_hovered)
+
+        # Draw middle card
         if middle_card:
             draw_card_slot(middle_slot[0], middle_slot[1],
                            120, 150, image=middle_card.image)
 
+        # Draw computer's cards at updated slots
         draw_card_slot(60, 520, 120, 150, image=back_image)
         for i, carte in enumerate(game.computer.hand):
-            is_hovered = pygame.Rect(player2slots[i][0], player2slots[i][1], 120, 150).collidepoint(mouse_x, mouse_y)
-            draw_card_slot(player2slots[i][0], player2slots[i][1], 120, 150, image=carte.image, is_hovered=is_hovered)
+            is_hovered = pygame.Rect(
+                player2slots[i][0], player2slots[i][1], 120, 150).collidepoint(mouse_x, mouse_y)
+            draw_card_slot(player2slots[i][0], player2slots[i][1],
+                           120, 150, image=carte.image, is_hovered=is_hovered)
 
-
-        def handle_card_click(hand, middle_slot):
+        def handle_card_click(hand, middle_slot, game):
             mouse_x, mouse_y = pygame.mouse.get_pos()
-            player_slots = [(280 + i * 150, 520) for i in range(len(hand))]
+            player_slots = [(280 + i * 130, 520) for i in range(len(hand))]
 
             for i, (x, y) in enumerate(player_slots):
                 card_rect = pygame.Rect(x, y, 120, 150)
 
                 if card_rect.collidepoint(mouse_x, mouse_y):
+                    # Retirer la carte de la main du joueur
                     clicked_card = hand.pop(i)
-                    return clicked_card  
-            return None  
+                    return clicked_card  # Retourne la carte jouée pour l'afficher au centre
+            return None
 
-        
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
             elif event.type == pygame.MOUSEBUTTONDOWN:
-                clicked_card = handle_card_click(game.computer.hand, middle_slot)
+                clicked_card = handle_card_click(
+                    game.computer.hand, middle_slot, game)
                 if clicked_card:
                     middle_card = clicked_card
 
