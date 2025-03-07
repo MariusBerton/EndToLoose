@@ -148,7 +148,10 @@ class Game():
     def use(self, user, card: Cards):
         if card.id < 4 and card.id > 0:
             for i in range(card.id):
-                user.draw()
+                if user == "player":
+                    self.player.draw()
+                else:
+                    self.computer.draw()
         elif card.id > 3 and card.id < 6:
             for i in range(card.id - 3):
                 if user == "player":
@@ -197,11 +200,6 @@ starting_deck.append(Cards("reveal", 7, card_images[7]))
 starting_deck.append(Cards("exchange", 8, card_images[8]))
 
 
-def launch_game():
-    game = Game(starting_deck, starting_deck, 1)
-    game.setup()
-
-
 # Boucle principale
 def main():
     display_home_screen()
@@ -209,10 +207,8 @@ def main():
     game = Game(starting_deck, starting_deck, 1)
     game.setup()
 
-    # Calculate card slots for player and computer
-    player1slots = [(280 + i * 130, 50) for i in range(len(game.player.hand))]
-    player2slots = [(280 + i * 130, 520)
-                    for i in range(len(game.computer.hand))]
+    player1slots = [(280 + i * 50, 50) for i in range(len(game.player.hand))]
+    player2slots = [(280 + i * 50, 520) for i in range(len(game.computer.hand))]
 
     middle_slot = (585, 300)
     middle_card = None
@@ -231,9 +227,8 @@ def main():
             is_hovered = pygame.Rect(
                 player1slots[i][0], player1slots[i][1], 120, 150).collidepoint(mouse_x, mouse_y)
             draw_card_slot(player1slots[i][0], player1slots[i][1],
-                           120, 150, image=back_image, is_hovered=is_hovered)
-
-        # Draw middle card
+                          120, 150, image=back_image, is_hovered=is_hovered)
+           
         if middle_card:
             draw_card_slot(middle_slot[0], middle_slot[1],
                            120, 150, image=middle_card.image)
@@ -256,18 +251,19 @@ def main():
                 if card_rect.collidepoint(mouse_x, mouse_y):
                     # Retirer la carte de la main du joueur
                     clicked_card = hand.pop(i)
-                    return clicked_card  # Retourne la carte jouée pour l'afficher au centre
-            return None
+                    return clicked_card  
+            return None  
 
+        
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
             elif event.type == pygame.MOUSEBUTTONDOWN:
-                clicked_card = handle_card_click(
-                    game.computer.hand, middle_slot, game)
+                clicked_card = handle_card_click(game.computer.hand, middle_slot)
                 if clicked_card:
                     middle_card = clicked_card
+                    game.use("player", clicked_card)
 
         pygame.display.update()
 
