@@ -1,6 +1,7 @@
 from Cards import Cards
 from Player import Player
 from Computer import Computer
+from time import sleep
 from random import shuffle, choice
 import pygame
 import sys
