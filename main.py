@@ -147,16 +147,18 @@ class Game():
 
     def use(self, user, card: Cards):
         if card.id < 4 and card.id > 0:
-            for i in range(card.id):
-                if user == "player":
+            if user == "player":
+                for i in range(card.id):
                     self.player.draw()
-                else:
+            else:
+                for i in range(card.id):
                     self.computer.draw()
         elif card.id > 3 and card.id < 6:
-            for i in range(card.id - 3):
-                if user == "player":
+            if user == "player":
+                for i in range(card.id - 3):
                     self.computer.discard()
-                else:
+            else:
+                for i in range(card.id - 3):
                     self.player.discard()
         elif card.id == 6:
             pass
