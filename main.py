@@ -72,13 +72,12 @@ def draw_card_slot(x, y, width, height, image=None, is_hovered=False):
     if image:
         if is_hovered:
             enlarged_image = pygame.transform.scale(
-                image, (140, 175))  # Agrandir
-            SCREEN.blit(enlarged_image, (x - 10, y - 10))  # Décaler légèrement
+                image, (280, 350))  # Agrandir
+            SCREEN.blit(enlarged_image, (x - 100, y - 200))  # Décaler légèrement
         else:
             SCREEN.blit(image, (x, y))
 
 def display_home_screen():
-    # Charger la police
     font_menu = os.path.join(ASSETS_DIR, "SHOWG.TTF")
     if not os.path.exists(font_menu):
         print(f"Error: Font file SHOWG.TTF not found in {ASSETS_DIR}.")
@@ -221,25 +220,21 @@ starting_deck.append(Cards("exchange", 8, card_images[8]))
 def launch_game():
     game = Game(starting_deck, starting_deck, 1)
     game.setup()
-    # turn_order = game.order()
-    # if turn_order == True:
-    #     game.playerTurn()
-    # else:
-    #     game.computerTurn()
 
 
 # Boucle principale
 def main():
-    display_home_screen()  # affiche le home
+    display_home_screen()  
 
     game = Game(starting_deck, starting_deck, 1)
     game.setup()
 
-    player1slots = [(280 + i * 150, 50) for i in range(5)]
-    player2slots = [(280 + i * 150, 520) for i in range(5)]
+    player1slots = [(280 + i * 50, 50) for i in range(len(game.player.hand))]
+    player2slots = [(280 + i * 50, 520) for i in range(len(game.computer.hand))]
 
     middle_slot = (585, 300)
     middle_card = None
+    
 
     while True:
         SCREEN.fill((0, 0, 0))
@@ -263,7 +258,7 @@ def main():
             is_hovered = pygame.Rect(player2slots[i][0], player2slots[i][1], 120, 150).collidepoint(mouse_x, mouse_y)
             draw_card_slot(player2slots[i][0], player2slots[i][1], 120, 150, image=carte.image, is_hovered=is_hovered)
 
-        def handle_card_click(hand, middle_slot):
+        def handle_card_click(hand, middle_slot, game):
             mouse_x, mouse_y = pygame.mouse.get_pos()
             player_slots = [(280 + i * 150, 520) for i in range(len(hand))]
 
@@ -271,16 +266,22 @@ def main():
                 card_rect = pygame.Rect(x, y, 120, 150)
 
                 if card_rect.collidepoint(mouse_x, mouse_y):
-                    clicked_card = hand.pop(i)
+                    clicked_card = hand.pop(i)  
+
+                    if clicked_card.id == 1:
+                        if game.player.deck: 
+                            game.player.draw()
+
                     return clicked_card  
             return None  
 
+        
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
             elif event.type == pygame.MOUSEBUTTONDOWN:
-                clicked_card = handle_card_click(game.computer.hand, middle_slot)
+                clicked_card = handle_card_click(game.computer.hand, middle_slot, game)
                 if clicked_card:
                     middle_card = clicked_card
 
