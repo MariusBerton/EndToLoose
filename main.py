@@ -57,17 +57,6 @@ def load_back_image():
     return pygame.image.load(back_path)
 
 
-# def draw_card_slot(x, y, width, height, text="", color=None, image=None):
-#     if color:
-#         pygame.draw.rect(SCREEN, color, (x, y, width, height), 3)
-#     if text:
-#         font = pygame.font.Font(None, 36)
-#         label = font.render(text, True, WHITE)
-#         SCREEN.blit(label, (x + 15, y + 15))
-#     if image:
-#         SCREEN.blit(image, (x, y))
-
-
 def draw_card_slot(x, y, width, height, image=None, is_hovered=False):
     if image:
         if is_hovered:
@@ -156,32 +145,6 @@ class Game():
             self.player.draw()
             self.computer.draw()
 
-    # def order(self):
-    #     choice = input("head or tails ?\n")
-    #     if choice == "head" or choice == "tails":
-    #         print("Flipping the coin")
-    #         coin = self.flip()
-    #         print(f"{coin} !")
-    #         if coin == choice:
-    #             print("You start")
-    #             return True
-    #         else:
-    #             print("The opponent starts")
-    #             return False
-    #     else:
-    #         return self.order()
-
-    # def playerTurn(self):
-    #     print("Your turn")
-    #     print("Choose a card")
-    #     card = int(input(f"{self.player.hand}\n"))
-    #     print(self.player.hand[card-1])
-
-    # def computerTurn(self):
-    #     print("The opponent's turn")
-    #     print("Choosing a card")
-    #     print(self.computer.choice())
-
     def use(self, user, card: Cards):
         if card.id < 4 and card.id > 0:
             for i in range(card.id):
@@ -235,11 +198,6 @@ for i in range(3):
     starting_deck.append(Cards("show", 6, card_images[6]))
 starting_deck.append(Cards("reveal", 7, card_images[7]))
 starting_deck.append(Cards("exchange", 8, card_images[8]))
-
-
-def launch_game():
-    game = Game(starting_deck, starting_deck, 1)
-    game.setup()
 
 
 # Boucle principale
