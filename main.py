@@ -210,7 +210,8 @@ def main():
     game.setup()
 
     player1slots = [(280 + i * 50, 50) for i in range(len(game.player.hand))]
-    player2slots = [(280 + i * 50, 520) for i in range(len(game.computer.hand))]
+    player2slots = [(280 + i * 50, 520)
+                    for i in range(len(game.computer.hand))]
 
     middle_slot = (585, 300)
     middle_card = None
@@ -229,8 +230,8 @@ def main():
             is_hovered = pygame.Rect(
                 player1slots[i][0], player1slots[i][1], 120, 150).collidepoint(mouse_x, mouse_y)
             draw_card_slot(player1slots[i][0], player1slots[i][1],
-                          120, 150, image=back_image, is_hovered=is_hovered)
-           
+                           120, 150, image=back_image, is_hovered=is_hovered)
+
         if middle_card:
             draw_card_slot(middle_slot[0], middle_slot[1],
                            120, 150, image=middle_card.image)
@@ -243,7 +244,7 @@ def main():
             draw_card_slot(player2slots[i][0], player2slots[i][1],
                            120, 150, image=carte.image, is_hovered=is_hovered)
 
-        def handle_card_click(hand, middle_slot, game):
+        def handle_card_click(hand, middle_slot):
             mouse_x, mouse_y = pygame.mouse.get_pos()
             player_slots = [(280 + i * 130, 520) for i in range(len(hand))]
 
@@ -253,16 +254,16 @@ def main():
                 if card_rect.collidepoint(mouse_x, mouse_y):
                     # Retirer la carte de la main du joueur
                     clicked_card = hand.pop(i)
-                    return clicked_card  
-            return None  
+                    return clicked_card
+            return None
 
-        
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
             elif event.type == pygame.MOUSEBUTTONDOWN:
-                clicked_card = handle_card_click(game.computer.hand, middle_slot)
+                clicked_card = handle_card_click(
+                    game.computer.hand, middle_slot)
                 if clicked_card:
                     middle_card = clicked_card
                     game.use("player", clicked_card)
