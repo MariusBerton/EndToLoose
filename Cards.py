@@ -11,12 +11,6 @@ class Cards:
         self.image = pygame.transform.scale(image, (120, 150))
         self.rect = image.get_rect()
 
-    def use(self):
-        if self.id == 0:
-            pass
-        elif self.id > 0 and self.id < 4:
-            pass
-
     def __repr__(self):
         return "id : {} | name : {}\n".format(self.id, self.name)
 
