@@ -1,9 +1,8 @@
 from Cards import Cards
 from Player import Player
 from Computer import Computer
-from random import randint, shuffle, choice
+from random import shuffle, choice
 import pygame
-import random
 import sys
 import os
 
@@ -169,22 +168,37 @@ class Game():
     #     else:
     #         return self.order()
 
-    def playerTurn(self):
-        print("Your turn")
-        print("Choose a card")
-        card = int(input(f"{self.player.hand}\n"))
-        print(self.player.hand[card-1])
+    # def playerTurn(self):
+    #     print("Your turn")
+    #     print("Choose a card")
+    #     card = int(input(f"{self.player.hand}\n"))
+    #     print(self.player.hand[card-1])
 
-    def computerTurn(self):
-        print("The opponent's turn")
-        print("Choosing a card")
-        print(self.computer.choice())
+    # def computerTurn(self):
+    #     print("The opponent's turn")
+    #     print("Choosing a card")
+    #     print(self.computer.choice())
+
+    def use(self, user, card: Cards):
+        if card.id < 4 and card.id > 0:
+            for i in range(card.id):
+                user.draw()
+        elif card.id > 3 and card.id < 6:
+            for i in range(card.id - 3):
+                if user == "player":
+                    self.computer.discard()
+                else:
+                    self.player.discard()
+        elif card.id == 6:
+            pass
+        elif card.id == 7:
+            pass
+            # Besoin dune fonction pour voir une ou plusieur cartesde l'ordi
+        elif card.id == 8:
+            self.player.hand, self.computer.hand = self.computer.hand, self.player.hand
 
     def isHandEmpty(self):
         return self.player.hand == [] or self.computer == []
-
-    def exchange(self):
-        self.player.hand, self.computer.hand = self.computer.hand, self.player.hand
 
     def flip(self):
         return choice(["head", "tails"])
@@ -252,13 +266,13 @@ def main():
             draw_card_slot(middle_slot[0], middle_slot[1],
                            120, 150, image=middle_card.image)
 
-
         draw_card_slot(60, 520, 120, 150, image=back_image)
         for i, carte in enumerate(game.computer.hand):
             is_hovered = pygame.Rect(player2slots[i][0], player2slots[i][1], 120, 150).collidepoint(mouse_x, mouse_y)
             draw_card_slot(player2slots[i][0], player2slots[i][1], 120, 150, image=carte.image, is_hovered=is_hovered)
 
-        def handle_card_click(hand, middle_slot, game):
+
+        def handle_card_click(hand, middle_slot):
             mouse_x, mouse_y = pygame.mouse.get_pos()
             player_slots = [(280 + i * 150, 520) for i in range(len(hand))]
 
@@ -266,12 +280,7 @@ def main():
                 card_rect = pygame.Rect(x, y, 120, 150)
 
                 if card_rect.collidepoint(mouse_x, mouse_y):
-                    clicked_card = hand.pop(i)  
-
-                    if clicked_card.id == 1:
-                        if game.player.deck: 
-                            game.player.draw()
-
+                    clicked_card = hand.pop(i)
                     return clicked_card  
             return None  
 
@@ -281,7 +290,7 @@ def main():
                 pygame.quit()
                 sys.exit()
             elif event.type == pygame.MOUSEBUTTONDOWN:
-                clicked_card = handle_card_click(game.computer.hand, middle_slot, game)
+                clicked_card = handle_card_click(game.computer.hand, middle_slot)
                 if clicked_card:
                     middle_card = clicked_card
 
