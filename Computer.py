@@ -31,5 +31,5 @@ class Computer:
                     card.use()
                     return card.discard()
         else:
-            card = self.hand[randint(0, len(self.computer.hand)-1)]
+            card = self.hand[randint(0, len(self.hand)-1)]
             return card.use()
