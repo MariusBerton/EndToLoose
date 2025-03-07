@@ -248,10 +248,23 @@ def main():
             draw_card_slot(middle_slot[0], middle_slot[1],
                            120, 150, image=middle_card.image)
 
-        # dessiner emplacements Joueur 2 (nous)
+
         draw_card_slot(60, 520, 120, 150, image=back_image)
         for i, carte in enumerate(game.computer.hand):
             carte.draw(player2slots[i][0], player2slots[i][1])
+
+
+        def handle_card_click(hand, middle_slot):
+            mouse_x, mouse_y = pygame.mouse.get_pos()
+            player_slots = [(280 + i * 150, 520) for i in range(len(hand))]
+
+            for i, (x, y) in enumerate(player_slots):
+                card_rect = pygame.Rect(x, y, 120, 150)
+
+                if card_rect.collidepoint(mouse_x, mouse_y):
+                    clicked_card = hand.pop(i)
+                    return clicked_card  
+            return None  
 
         # Gestion des événements
         for event in pygame.event.get():
@@ -259,12 +272,9 @@ def main():
                 pygame.quit()
                 sys.exit()
             elif event.type == pygame.MOUSEBUTTONDOWN:
-                clicked_card, nouvelle_carte = handle_card_click(
-                    game.computer.hand, middle_slot, game.player.deck)
+                clicked_card = handle_card_click(game.computer.hand, middle_slot)
                 if clicked_card:
                     middle_card = clicked_card
-                    if nouvelle_carte:
-                        game.computer.hand.append(nouvelle_carte)
 
         pygame.display.update()
 
