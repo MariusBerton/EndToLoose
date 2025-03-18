@@ -3,12 +3,10 @@ from Player import Player
 from Computer import Computer
 from time import sleep
 from random import shuffle, choice
-import pygame
-import sys
-import os
+import pygame, sys, os
 
-# chemin vers dossier assets
-ASSETS_DIR = os.path.join(os.getcwd(), "assets")
+
+ASSETS = os.path.join(os.getcwd(), "assets")
 
 pygame.init()
 
@@ -25,18 +23,16 @@ GREEN = (0, 200, 0)
 BEIGE = (208, 176, 139)
 BLUE = (17, 50, 67, 255)
 
-# les images de cartes
-
+# images
 
 def load_card_images():
-    if not os.path.exists(ASSETS_DIR):
-        print(
-            f"Error: assets file not found {ASSETS_DIR}.")
+    if not os.path.exists(ASSETS):
+        print(f"Error: assets file not found {ASSETS}.")
         sys.exit()
 
     card_files = [
-        os.path.join(ASSETS_DIR, file)
-        for file in os.listdir(ASSETS_DIR)
+        os.path.join(ASSETS, file)
+        for file in os.listdir(ASSETS)
         if file.endswith(".png") and file != "back.png"
     ]
 
@@ -46,31 +42,25 @@ def load_card_images():
 
     return [pygame.image.load(card) for card in card_files]
 
+
 def load_back_image():
-    back_path = os.path.join(ASSETS_DIR, "back.png")
-    if not os.path.exists(back_path):
+    back = os.path.join(ASSETS, "back.png")
+    if not os.path.exists(back):
         print(f"Error: image 'back.png' cannot be found.")
         sys.exit()
-    return pygame.image.load(back_path)
+    return pygame.image.load(back)
 
 
 def load_background():
-    background_path = os.path.join(ASSETS_DIR, "fond.png")
-    if not os.path.exists(background_path):
+    background = os.path.join(ASSETS, "fond.png")
+    if not os.path.exists(background):
         print(f"Error")
         sys.exit()
-    return pygame.image.load(background_path)
+    return pygame.image.load(background)
 
 
-# def draw_card_slot(x, y, width, height, text="", color=None, image=None):
-#     if color:
-#         pygame.draw.rect(SCREEN, color, (x, y, width, height), 3)
-#     if text:
-#         font = pygame.font.Font(None, 36)
-#         label = font.render(text, True, WHITE)
-#         SCREEN.blit(label, (x + 15, y + 15))
-#     if image:
-#         SCREEN.blit(image, (x, y))
+background_image = pygame.transform.scale(load_background(), (WIDTH, HEIGHT))
+
 
 def draw_card_slot(x, y, width, height, image=None, is_hovered=False):
     if image:
@@ -82,38 +72,35 @@ def draw_card_slot(x, y, width, height, image=None, is_hovered=False):
             SCREEN.blit(image, (x, y))
 
 
-def get_card_positions(start_x, y, hand, max_width=800, min_spacing=50, max_spacing=100):
+def get_card_positions(start_x, y, hand, max_width=800, min_space=50, max_space=100):
     card_width = 120
     if len(hand) > 1:
-        space = min(max_spacing, max(
-            min_spacing, max_width // (len(hand) - 1)))
+        space = min(max_space, max(
+            min_space, max_width // (len(hand) - 1)))
     else:
         space = 0 
-
     return [(start_x + i * space, y) for i in range(len(hand))]
 
 
-background_image = pygame.transform.scale(load_background(), (WIDTH, HEIGHT))
-
 def display_home_screen():
-    font_menu = os.path.join(ASSETS_DIR, "SHOWG.TTF")
+    font_menu = os.path.join(ASSETS, "SHOWG.TTF")
     if not os.path.exists(font_menu):
-        print(f"Error: Font file SHOWG.TTF not found in {ASSETS_DIR}.")
+        print(f"Error: Font file SHOWG.TTF not found in {ASSETS}.")
         sys.exit()
     SCREEN.blit(background_image, (0, 0))
 
     font = pygame.font.Font(font_menu, 74)
 
-    title1 = font.render("End", True, BLUE)
-    title2 = font.render("To", True, BLUE)
-    title3 = font.render("Loose", True, BLUE)
+    END = font.render("End", True, BLUE)
+    TO = font.render("To", True, BLUE)
+    LOOSE = font.render("Loose", True, BLUE)
 
     button_width = 200
     button_height = 60
 
     loose_pos_y = HEIGHT // 4 + 100
 
-    button_start_y = loose_pos_y + title3.get_height() + 50
+    button_start_y = loose_pos_y + LOOSE.get_height() + 50
 
     horizontal_spacing = 50
     total_button_width = 2 * button_width + horizontal_spacing
@@ -127,24 +114,24 @@ def display_home_screen():
     while True:
         SCREEN.blit(background_image, (0, 0))
 
-        SCREEN.blit(title1, (WIDTH // 2 - title1.get_width() //
+        SCREEN.blit(END, (WIDTH // 2 - END.get_width() //
                     2, HEIGHT // 4 - 80))
-        SCREEN.blit(title2, (WIDTH // 2 - title2.get_width() //
+        SCREEN.blit(TO, (WIDTH // 2 - TO.get_width() //
                     2, HEIGHT // 4 + 10))
-        SCREEN.blit(title3, (WIDTH // 2 - title3.get_width() //
+        SCREEN.blit(LOOSE, (WIDTH // 2 - LOOSE.get_width() //
                     2, HEIGHT // 4 + 100))
 
         pygame.draw.rect(SCREEN, BLUE, play_button)
         pygame.draw.rect(SCREEN, BLUE, quit_button)
 
         button_font = pygame.font.Font(font_menu, 50)
-        start_text = button_font.render("Play", True, BEIGE)
-        quit_text = button_font.render("Quit", True, BEIGE)
+        PLAY = button_font.render("Play", True, BEIGE)
+        QUIT = button_font.render("Quit", True, BEIGE)
 
-        SCREEN.blit(start_text, (play_button.x + play_button.width // 2 - start_text.get_width() // 2,
-                                 play_button.y + play_button.height // 2 - start_text.get_height() // 2))
-        SCREEN.blit(quit_text, (quit_button.x + quit_button.width // 2 - quit_text.get_width() // 2,
-                                quit_button.y + quit_button.height // 2 - quit_text.get_height() // 2))
+        SCREEN.blit(PLAY, (play_button.x + play_button.width // 2 - PLAY.get_width() // 2,
+                                 play_button.y + play_button.height // 2 - PLAY.get_height() // 2))
+        SCREEN.blit(QUIT, (quit_button.x + quit_button.width // 2 - QUIT.get_width() // 2,
+                                quit_button.y + quit_button.height // 2 - QUIT.get_height() // 2))
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -202,7 +189,7 @@ class Game():
 
     def use(self, user, card: Cards):
             if card.id < 4 and card.id > 0:
-                for i in range(card.id):
+                for _ in range(card.id):
                     if user == "player":
                         self.player.draw()
                     else:
@@ -271,10 +258,8 @@ def main():
     game = Game(starting_deck, starting_deck, 1)
     game.setup()
 
-
     player1slots = get_card_positions(280, 520, game.computer.hand)
     player2slots = get_card_positions(280, 50, game.player.hand)
-
 
     middle_slot = (585, 300)
     middle_card = None
@@ -335,10 +320,10 @@ def main():
                     pygame.display.update() 
                     
                     pygame.time.delay(1000)
-                    ai_card = handle_card_click(game.computer.hand, player1slots)
-                    if ai_card:
-                        game.use("computer", ai_card)
-                        middle_card = ai_card
+                    card_bot = handle_card_click(game.computer.hand, player1slots)
+                    if card_bot:
+                        game.use("computer", card_bot)
+                        middle_card = card_bot
 
         pygame.display.update() 
 
