@@ -82,6 +82,45 @@ def get_card_positions(start_x, y, hand, max_width=800, min_space=50, max_space=
     return [(start_x + i * space, y) for i in range(len(hand))]
 
 
+def display_rules_screen():
+    rules_text = [
+        "Rules of tthe game :",
+        "1. ",
+        "2. ",
+        "3. ",
+        "4. ",
+        "5. "
+    ]
+
+    font_menu = os.path.join(ASSETS, "SHOWG.TTF")
+    if not os.path.exists(font_menu):
+        print(f"Error: Font file SHOWG.TTF not found in {ASSETS}.")
+        sys.exit()
+
+    font = pygame.font.Font(font_menu, 40)
+    back_button = pygame.Rect(WIDTH // 2 - 100, HEIGHT - 100, 200, 60)
+
+    while True:
+        SCREEN.fill(BEIGE)
+        for i, line in enumerate(rules_text):
+            text_surface = font.render(line, True, BLACK)
+            SCREEN.blit(text_surface, (WIDTH // 2 - text_surface.get_width() // 2, 100 + i * 50))
+        
+        pygame.draw.rect(SCREEN, BLUE, back_button)
+        back_text = font.render("Back", True, BEIGE)
+        SCREEN.blit(back_text, (back_button.x + 50, back_button.y + 10))
+        
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                if back_button.collidepoint(event.pos):
+                    return
+        
+        pygame.display.update()
+
+
 def display_home_screen():
     font_menu = os.path.join(ASSETS, "SHOWG.TTF")
     if not os.path.exists(font_menu):
@@ -98,18 +137,12 @@ def display_home_screen():
     button_width = 200
     button_height = 60
 
-    loose_pos_y = HEIGHT // 4 + 100
-
-    button_start_y = loose_pos_y + LOOSE.get_height() + 50
-
-    horizontal_spacing = 50
-    total_button_width = 2 * button_width + horizontal_spacing
-
     play_button = pygame.Rect(
-        WIDTH // 2 - total_button_width // 2, button_start_y, button_width, button_height)
-
+        WIDTH // 2 - 250, HEIGHT // 2, button_width, button_height)
+    rules_button = pygame.Rect(
+        WIDTH // 2 - 50, HEIGHT // 2, button_width, button_height)
     quit_button = pygame.Rect(
-        play_button.right + horizontal_spacing, button_start_y, button_width, button_height)
+        WIDTH // 2 + 150, HEIGHT // 2, button_width, button_height)
 
     while True:
         SCREEN.blit(background_image, (0, 0))
@@ -120,18 +153,19 @@ def display_home_screen():
                     2, HEIGHT // 4 + 10))
         SCREEN.blit(LOOSE, (WIDTH // 2 - LOOSE.get_width() //
                     2, HEIGHT // 4 + 100))
-
+        
         pygame.draw.rect(SCREEN, BLUE, play_button)
+        pygame.draw.rect(SCREEN, BLUE, rules_button)
         pygame.draw.rect(SCREEN, BLUE, quit_button)
 
         button_font = pygame.font.Font(font_menu, 50)
         PLAY = button_font.render("Play", True, BEIGE)
+        RULES = button_font.render("Rules", True, BEIGE)
         QUIT = button_font.render("Quit", True, BEIGE)
 
-        SCREEN.blit(PLAY, (play_button.x + play_button.width // 2 - PLAY.get_width() // 2,
-                                 play_button.y + play_button.height // 2 - PLAY.get_height() // 2))
-        SCREEN.blit(QUIT, (quit_button.x + quit_button.width // 2 - QUIT.get_width() // 2,
-                                quit_button.y + quit_button.height // 2 - QUIT.get_height() // 2))
+        SCREEN.blit(PLAY, (play_button.x + 50, play_button.y + 10))
+        SCREEN.blit(RULES, (rules_button.x + 30, rules_button.y + 10))
+        SCREEN.blit(QUIT, (quit_button.x + 50, quit_button.y + 10))
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -140,11 +174,14 @@ def display_home_screen():
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if play_button.collidepoint(event.pos):
                     return
+                elif rules_button.collidepoint(event.pos):
+                    display_rules_screen()
                 elif quit_button.collidepoint(event.pos):
                     pygame.quit()
                     sys.exit()
 
         pygame.display.update()
+
 
 
 class Game():
@@ -250,10 +287,15 @@ def launch_game():
     game = Game(starting_deck, starting_deck, 1)
     game.setup()
 
+font_menu = os.path.join(ASSETS, "SHOWG.TTF")
+back_button = pygame.Rect(WIDTH - 170, HEIGHT - 70, 140, 40)
+button_font = pygame.font.Font(font_menu, 50)
 
 # boucle
+
+
 def main():
-    display_home_screen()  
+    display_home_screen()
 
     game = Game(starting_deck, starting_deck, 1)
     game.setup()
@@ -263,69 +305,86 @@ def main():
 
     middle_slot = (585, 300)
     middle_card = None
-    
+
+    font_menu = os.path.join(ASSETS, "SHOWG.TTF")
+    button_font = pygame.font.Font(font_menu, 50)
+
     while True:
         SCREEN.fill((0, 0, 0))
         SCREEN.blit(background_image, (0, 0))
+
+        # Dessiner le bouton Back dynamiquement
+        back_text = button_font.render("Back", True, BEIGE)
+        back_width = back_text.get_width() + 20
+        back_height = 50
+        back_x = WIDTH - back_width - 20
+        back_y = HEIGHT - back_height - 20
+        back_button = pygame.Rect(back_x, back_y, back_width, back_height)
+
+        pygame.draw.rect(SCREEN, BLUE, back_button)
+        SCREEN.blit(back_text, (back_x + (back_width - back_text.get_width()) // 2,
+                                back_y + (back_height - back_text.get_height()) // 2))
 
         mouse_x, mouse_y = pygame.mouse.get_pos()
 
         draw_card_slot(1100, 50, 120, 150, image=back_image)
         if len(game.player.hand) > 0:
-            player2slots = [(280 + i * 50, 50) for i in range(len(game.player.hand))]
+            player2slots = [(280 + i * 50, 50)
+                            for i in range(len(game.player.hand))]
+
         for i, _ in enumerate(game.player.hand):
             is_hovered = pygame.Rect(
-               player2slots[i][0], player2slots[i][1], 120, 150).collidepoint(mouse_x, mouse_y)
+                player2slots[i][0], player2slots[i][1], 120, 150).collidepoint(mouse_x, mouse_y)
             draw_card_slot(player2slots[i][0], player2slots[i][1],
-                          120, 150, image=back_image, is_hovered=is_hovered)
-           
+                           120, 150, image=back_image, is_hovered=is_hovered)
+
         if middle_card:
             draw_card_slot(middle_slot[0], middle_slot[1],
                            120, 150, image=middle_card.image)
 
         draw_card_slot(60, 520, 120, 150, image=back_image)
         for i, carte in enumerate(game.computer.hand):
-            is_hovered = pygame.Rect(player1slots[i][0], player1slots[i][1], 120, 150).collidepoint(mouse_x, mouse_y)
-            draw_card_slot(player1slots[i][0], player1slots[i][1], 120, 150, image=carte.image, is_hovered=is_hovered)
+            is_hovered = pygame.Rect(
+                player1slots[i][0], player1slots[i][1], 120, 150).collidepoint(mouse_x, mouse_y)
+            draw_card_slot(player1slots[i][0], player1slots[i][1],
+                           120, 150, image=carte.image, is_hovered=is_hovered)
 
         def handle_card_click(hand, slots):
-            if not hand:  
+            if not hand:
                 return None
 
             mouse_x, mouse_y = pygame.mouse.get_pos()
-
             for i, (x, y) in enumerate(slots):
                 card_rect = pygame.Rect(x, y, 120, 150)
-
                 if card_rect.collidepoint(mouse_x, mouse_y):
-                    if i < len(hand):  
-                        return hand.pop(i) 
-                    else:
-                        print("Erreur")
+                    if i < len(hand):
+                        return hand.pop(i)
             return None
 
-        
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
             elif event.type == pygame.MOUSEBUTTONDOWN:
+                if back_button.collidepoint(event.pos):
+                    display_home_screen()
+
                 clicked_card = handle_card_click(
                     game.player.hand, player1slots)
-
                 if clicked_card:
-                    game.use("player", clicked_card)  
-                    middle_card = clicked_card  
-                    
-                    pygame.display.update() 
-                    
+                    game.use("player", clicked_card)
+                    middle_card = clicked_card
+
+                    pygame.display.update()
                     pygame.time.delay(1000)
-                    card_bot = handle_card_click(game.computer.hand, player1slots)
+                    card_bot = handle_card_click(
+                        game.computer.hand, player1slots)
                     if card_bot:
                         game.use("computer", card_bot)
                         middle_card = card_bot
 
-        pygame.display.update() 
+        pygame.display.update()
+
 
 
 main()
