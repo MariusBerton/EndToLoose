@@ -294,14 +294,14 @@ def main():
 
         # Dessiner le bouton Back dynamiquement
         back_text, new_game_text = button_font.render(
-            "Back", True, BEIGE),  button_font.render("New\nGame", True, BEIGE)
+            "Back", True, BEIGE),  button_font.render("New Game", True, BEIGE)
         back_width, new_game_width = back_text.get_width() + \
             20, new_game_text.get_width() + 20
         back_height, new_game_height = 50, 50
         back_x, new_game_x = WIDTH - back_width - \
-            20, 10
-        back_y, new_game_y = HEIGHT - back_height - \
-            20, new_game_height
+            20, WIDTH - new_game_width - 20
+        back_y, new_game_y = HEIGHT - 2 * back_height - \
+            40, HEIGHT - new_game_height - 20
         back_button, new_game_button = pygame.Rect(
             back_x, back_y, back_width, back_height), pygame.Rect(new_game_x, new_game_y, new_game_width, new_game_height)
 
@@ -310,8 +310,8 @@ def main():
                                 back_y + (back_height - back_text.get_height()) // 2))
 
         pygame.draw.rect(SCREEN, BLUE, new_game_button)
-        SCREEN.blit(back_text, (new_game_x + (new_game_width - new_game_text.get_width()) // 2,
-                                new_game_y + (new_game_height - new_game_text.get_height()) // 2))
+        SCREEN.blit(new_game_text, (new_game_x + (new_game_width - new_game_text.get_width()) // 2,
+                                    new_game_y + (new_game_height - new_game_text.get_height()) // 2))
 
         mouse_x, mouse_y = pygame.mouse.get_pos()
 
