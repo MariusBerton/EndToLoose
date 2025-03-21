@@ -87,12 +87,12 @@ def get_card_positions(start_x, y, hand, max_width=800, min_space=50, max_space=
 
 def display_rules_screen():
     rules_text = [
-        "Rules of tthe game :",
-        "1. Choose a card",
-        "2. Apply it's effect",
-        "3. Now it's your opponent's turn",
-        "4. The first one to empty his hand loose",
-        "5. Enjoy"
+        "Rules of the game :",
+        "1. Choose a card.",
+        "2. Apply it's effect.",
+        "3. Now it's your opponent's turn.",
+        "4. The first one to empty his hand loose.",
+        "5. Enjoy."
     ]
 
     font_menu = os.path.join(ASSETS, "SHOWG.TTF")
@@ -361,7 +361,7 @@ def main():
                         game.use("computer", card_bot)
                         middle_card = card_bot
 
-        pygame.display.update()
+        pygame.display.flip()
 
 
 main()
