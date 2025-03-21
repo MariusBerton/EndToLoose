@@ -353,7 +353,7 @@ def main():
                     middle_card = clicked_card
 
                     pygame.display.update()
-                    pygame.time.delay(1000)
+                    pygame.time.delay(500)
                     card_bot = handle_card_click(
                         game.computer.hand, player1slots)
                     if card_bot:
