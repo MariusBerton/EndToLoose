@@ -261,11 +261,6 @@ starting_deck.append(Cards("reveal", 7, card_images[7]))
 starting_deck.append(Cards("exchange", 8, card_images[8]))
 
 
-def launch_game():
-    game = Game(starting_deck, starting_deck, 1)
-    game.setup()
-
-
 font_menu = os.path.join(ASSETS, "SHOWG.TTF")
 back_button = pygame.Rect(WIDTH - 170, HEIGHT - 70, 140, 40)
 button_font = pygame.font.Font(font_menu, 50)
