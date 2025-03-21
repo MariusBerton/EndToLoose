@@ -141,14 +141,15 @@ def display_home_screen():
     button_width = 200
     button_height = 60
 
-
     button_spacing = 50  # Augmente l'espace horizontal entre les boutons
 
-    play_button = pygame.Rect(WIDTH // 2 - (button_width * 1.5) - button_spacing, HEIGHT // 2, button_width, button_height)
-    rules_button = pygame.Rect(WIDTH // 2 - (button_width // 2), HEIGHT // 2, button_width, button_height)
-    quit_button = pygame.Rect(WIDTH // 2 + (button_width * 0.5) + button_spacing, HEIGHT // 2, button_width, button_height)
+    play_button = pygame.Rect(WIDTH // 2 - (button_width * 1.5) -
+                              button_spacing, HEIGHT // 2, button_width, button_height)
+    rules_button = pygame.Rect(
+        WIDTH // 2 - (button_width // 2), HEIGHT // 2, button_width, button_height)
+    quit_button = pygame.Rect(WIDTH // 2 + (button_width * 0.5) +
+                              button_spacing, HEIGHT // 2, button_width, button_height)
 
-    
     while True:
         SCREEN.blit(background_image, (0, 0))
 
@@ -249,12 +250,6 @@ class Game():
 
     def isHandEmpty(self):
         return self.player.hand == [] or self.computer == []
-
-    def flip(self):
-        return choice(["head", "tails"])
-
-    def __repr__(self):
-        return "Hand : {}\n".format(self.player.hand)
 
 
 global back_image
@@ -389,7 +384,7 @@ def main():
                     middle_card = clicked_card
 
                     pygame.display.update()
-                    pygame.time.delay(1000)
+                    pygame.time.delay(500)
                     card_bot = handle_card_click(
                         game.computer.hand, player1slots)
                     if card_bot:
