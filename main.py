@@ -188,6 +188,28 @@ def display_home_screen():
         pygame.display.update()
 
 
+def display_end_screen(message):
+    font = pygame.font.Font(font_menu, 100)
+    text = font.render(message, True, WHITE)
+
+    alpha = 0  # Commence transparent
+    fade_surface = pygame.Surface((WIDTH, HEIGHT))
+    fade_surface.fill(BLACK)
+
+    while alpha < 255:
+        fade_surface.set_alpha(alpha)
+        SCREEN.blit(background_image, (0, 0))
+        SCREEN.blit(
+            text, (WIDTH // 2 - text.get_width() // 2, HEIGHT // 2 - 50))
+        SCREEN.blit(fade_surface, (0, 0))
+        pygame.display.update()
+        pygame.time.delay(50)
+        alpha += 5
+
+    pygame.time.delay(2000)  # Pause 2 secondes
+    display_home_screen()
+
+
 class Game():
 
     def __init__(self, deck_player: list, deck_computer: list, behaviour: int):
@@ -285,6 +307,7 @@ def main():
         SCREEN.fill((0, 0, 0))
         SCREEN.blit(background_image, (0, 0))
 
+
         back_text, new_game_text = button_font.render(
             "Back", True, BEIGE),  button_font.render("New Game", True, BEIGE)
         back_width, new_game_width = back_text.get_width() + \
@@ -340,6 +363,14 @@ def main():
                     if i < len(hand):
                         return hand.pop(i)
             return None
+        
+        if not game.player.hand:
+            display_end_screen("You Win!")
+            return
+
+        elif not game.computer.hand:
+            display_end_screen("You Loose!")
+            return
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
