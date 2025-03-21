@@ -141,14 +141,15 @@ def display_home_screen():
     button_width = 200
     button_height = 60
 
+    new_game_button = pygame.Rect(
+        WIDTH // 2 + 150, HEIGHT // 2, button_width, button_height)
+    play_button = pygame.Rect(
+        WIDTH // 2 - 250, HEIGHT // 2, button_width, button_height)
+    rules_button = pygame.Rect(
+        WIDTH // 2 - 50, HEIGHT // 2, button_width, button_height)
+    quit_button = pygame.Rect(
+        WIDTH // 2 + 150, HEIGHT // 2, button_width, button_height)
 
-    button_spacing = 50  # Augmente l'espace horizontal entre les boutons
-
-    play_button = pygame.Rect(WIDTH // 2 - (button_width * 1.5) - button_spacing, HEIGHT // 2, button_width, button_height)
-    rules_button = pygame.Rect(WIDTH // 2 - (button_width // 2), HEIGHT // 2, button_width, button_height)
-    quit_button = pygame.Rect(WIDTH // 2 + (button_width * 0.5) + button_spacing, HEIGHT // 2, button_width, button_height)
-
-    
     while True:
         SCREEN.blit(background_image, (0, 0))
 
@@ -159,15 +160,18 @@ def display_home_screen():
         SCREEN.blit(LOOSE, (WIDTH // 2 - LOOSE.get_width() //
                     2, HEIGHT // 4 + 100))
 
+        pygame.draw.rect(SCREEN, BLUE, new_game_button)
         pygame.draw.rect(SCREEN, BLUE, play_button)
         pygame.draw.rect(SCREEN, BLUE, rules_button)
         pygame.draw.rect(SCREEN, BLUE, quit_button)
 
         button_font = pygame.font.Font(font_menu, 50)
+        NEW_GAME = button_font.render("New Game", True, BEIGE)
         PLAY = button_font.render("Play", True, BEIGE)
         RULES = button_font.render("Rules", True, BEIGE)
         QUIT = button_font.render("Quit", True, BEIGE)
 
+        SCREEN.blit(NEW_GAME, (new_game_button.x + 50, new_game_button.y + 10))
         SCREEN.blit(PLAY, (play_button.x + 50, play_button.y + 10))
         SCREEN.blit(RULES, (rules_button.x + 30, rules_button.y + 10))
         SCREEN.blit(QUIT, (quit_button.x + 50, quit_button.y + 10))
