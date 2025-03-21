@@ -279,13 +279,12 @@ def main():
     middle_card = None
 
     font_menu = os.path.join(ASSETS, "SHOWG.TTF")
-    button_font = pygame.font.Font(font_menu, 50)
+    button_font = pygame.font.Font(font_menu, 30)
 
     while True:
         SCREEN.fill((0, 0, 0))
         SCREEN.blit(background_image, (0, 0))
 
-        # Dessiner le bouton Back dynamiquement
         back_text, new_game_text = button_font.render(
             "Back", True, BEIGE),  button_font.render("New Game", True, BEIGE)
         back_width, new_game_width = back_text.get_width() + \
