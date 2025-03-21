@@ -87,12 +87,12 @@ def get_card_positions(start_x, y, hand, max_width=800, min_space=50, max_space=
 
 def display_rules_screen():
     rules_text = [
-        "Rules of the game :",
-        "1. Choose a card.",
-        "2. Apply it's effect.",
-        "3. Now it's your opponent's turn.",
-        "4. The first one to empty his hand loose.",
-        "5. Enjoy."
+        "Rules of tthe game :",
+        "1. ",
+        "2. ",
+        "3. ",
+        "4. ",
+        "5. "
     ]
 
     font_menu = os.path.join(ASSETS, "SHOWG.TTF")
@@ -141,6 +141,8 @@ def display_home_screen():
     button_width = 200
     button_height = 60
 
+    new_game_button = pygame.Rect(
+        WIDTH // 2 + 150, HEIGHT // 2, button_width, button_height)
     play_button = pygame.Rect(
         WIDTH // 2 - 250, HEIGHT // 2, button_width, button_height)
     rules_button = pygame.Rect(
@@ -163,7 +165,7 @@ def display_home_screen():
         pygame.draw.rect(SCREEN, BLUE, quit_button)
 
         button_font = pygame.font.Font(font_menu, 50)
-
+        NEW_GAME = button_font.render("New Game", True, BEIGE)
         PLAY = button_font.render("Play", True, BEIGE)
         RULES = button_font.render("Rules", True, BEIGE)
         QUIT = button_font.render("Quit", True, BEIGE)
@@ -370,7 +372,7 @@ def main():
                         game.use("computer", card_bot)
                         middle_card = card_bot
 
-        pygame.display.flip()
+        pygame.display.update()
 
 
 main()
