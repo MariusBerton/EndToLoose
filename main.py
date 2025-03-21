@@ -141,13 +141,14 @@ def display_home_screen():
     button_width = 200
     button_height = 60
 
-    play_button = pygame.Rect(
-        WIDTH // 2 - 250, HEIGHT // 2, button_width, button_height)
-    rules_button = pygame.Rect(
-        WIDTH // 2 - 50, HEIGHT // 2, button_width, button_height)
-    quit_button = pygame.Rect(
-        WIDTH // 2 + 150, HEIGHT // 2, button_width, button_height)
 
+    button_spacing = 50  # Augmente l'espace horizontal entre les boutons
+
+    play_button = pygame.Rect(WIDTH // 2 - (button_width * 1.5) - button_spacing, HEIGHT // 2, button_width, button_height)
+    rules_button = pygame.Rect(WIDTH // 2 - (button_width // 2), HEIGHT // 2, button_width, button_height)
+    quit_button = pygame.Rect(WIDTH // 2 + (button_width * 0.5) + button_spacing, HEIGHT // 2, button_width, button_height)
+
+    
     while True:
         SCREEN.blit(background_image, (0, 0))
 
