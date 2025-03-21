@@ -141,15 +141,14 @@ def display_home_screen():
     button_width = 200
     button_height = 60
 
+
     button_spacing = 50  # Augmente l'espace horizontal entre les boutons
 
-    play_button = pygame.Rect(WIDTH // 2 - (button_width * 1.5) -
-                              button_spacing, HEIGHT // 2, button_width, button_height)
-    rules_button = pygame.Rect(
-        WIDTH // 2 - (button_width // 2), HEIGHT // 2, button_width, button_height)
-    quit_button = pygame.Rect(WIDTH // 2 + (button_width * 0.5) +
-                              button_spacing, HEIGHT // 2, button_width, button_height)
+    play_button = pygame.Rect(WIDTH // 2 - (button_width * 1.5) - button_spacing, HEIGHT // 2, button_width, button_height)
+    rules_button = pygame.Rect(WIDTH // 2 - (button_width // 2), HEIGHT // 2, button_width, button_height)
+    quit_button = pygame.Rect(WIDTH // 2 + (button_width * 0.5) + button_spacing, HEIGHT // 2, button_width, button_height)
 
+    
     while True:
         SCREEN.blit(background_image, (0, 0))
 
@@ -362,7 +361,7 @@ def main():
                         game.use("computer", card_bot)
                         middle_card = card_bot
 
-        pygame.display.update()
+        pygame.display.flip()
 
 
 main()
