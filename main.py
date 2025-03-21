@@ -141,8 +141,6 @@ def display_home_screen():
     button_width = 200
     button_height = 60
 
-    new_game_button = pygame.Rect(
-        WIDTH // 2 + 150, HEIGHT // 2, button_width, button_height)
     play_button = pygame.Rect(
         WIDTH // 2 - 250, HEIGHT // 2, button_width, button_height)
     rules_button = pygame.Rect(
@@ -160,18 +158,16 @@ def display_home_screen():
         SCREEN.blit(LOOSE, (WIDTH // 2 - LOOSE.get_width() //
                     2, HEIGHT // 4 + 100))
 
-        pygame.draw.rect(SCREEN, BLUE, new_game_button)
         pygame.draw.rect(SCREEN, BLUE, play_button)
         pygame.draw.rect(SCREEN, BLUE, rules_button)
         pygame.draw.rect(SCREEN, BLUE, quit_button)
 
         button_font = pygame.font.Font(font_menu, 50)
-        NEW_GAME = button_font.render("New Game", True, BEIGE)
+
         PLAY = button_font.render("Play", True, BEIGE)
         RULES = button_font.render("Rules", True, BEIGE)
         QUIT = button_font.render("Quit", True, BEIGE)
 
-        SCREEN.blit(NEW_GAME, (new_game_button.x + 50, new_game_button.y + 10))
         SCREEN.blit(PLAY, (play_button.x + 50, play_button.y + 10))
         SCREEN.blit(RULES, (rules_button.x + 30, rules_button.y + 10))
         SCREEN.blit(QUIT, (quit_button.x + 50, quit_button.y + 10))
@@ -295,17 +291,26 @@ def main():
         SCREEN.fill((0, 0, 0))
         SCREEN.blit(background_image, (0, 0))
 
-        # Dessiner le bouton Back dynamiquement
-        back_text = button_font.render("Back", True, BEIGE)
-        back_width = back_text.get_width() + 20
-        back_height = 50
-        back_x = WIDTH - back_width - 20
-        back_y = HEIGHT - back_height - 20
-        back_button = pygame.Rect(back_x, back_y, back_width, back_height)
+        # Dessiner le bouton Back et New Game dynamiquement
+        back_text, new_game_text = button_font.render(
+            "Back", True, BEIGE),  button_font.render("New Game", True, BEIGE)
+        back_width, new_game_width = back_text.get_width() + \
+            20, new_game_text.get_width() + 20
+        back_height, new_game_height = 50, 50
+        back_x, new_game_x = WIDTH - back_width - \
+            20, 10
+        back_y, new_game_y = HEIGHT - back_height - \
+            20, new_game_height
+        back_button, new_game_button = pygame.Rect(
+            back_x, back_y, back_width, back_height), pygame.Rect(new_game_x, new_game_y, new_game_width, new_game_height)
 
         pygame.draw.rect(SCREEN, BLUE, back_button)
         SCREEN.blit(back_text, (back_x + (back_width - back_text.get_width()) // 2,
                                 back_y + (back_height - back_text.get_height()) // 2))
+
+        pygame.draw.rect(SCREEN, BLUE, new_game_button)
+        SCREEN.blit(back_text, (new_game_x + (new_game_width - new_game_text.get_width()) // 2,
+                                new_game_y + (new_game_height - new_game_text.get_height()) // 2))
 
         mouse_x, mouse_y = pygame.mouse.get_pos()
 
