@@ -294,7 +294,7 @@ def main():
 
         # Dessiner le bouton Back dynamiquement
         back_text, new_game_text = button_font.render(
-            "Back", True, BEIGE),  button_font.render("New Game", True, BEIGE)
+            "Back", True, BEIGE),  button_font.render("New\nGame", True, BEIGE)
         back_width, new_game_width = back_text.get_width() + \
             20, new_game_text.get_width() + 20
         back_height, new_game_height = 50, 50
