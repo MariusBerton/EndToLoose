@@ -3,7 +3,9 @@ from Player import Player
 from Computer import Computer
 from time import sleep
 from random import shuffle, choice
-import pygame, sys, os
+import pygame
+import sys
+import os
 
 
 ASSETS = os.path.join(os.getcwd(), "assets")
@@ -24,6 +26,7 @@ BEIGE = (208, 176, 139)
 BLUE = (17, 50, 67, 255)
 
 # images
+
 
 def load_card_images():
     if not os.path.exists(ASSETS):
@@ -66,8 +69,8 @@ def draw_card_slot(x, y, width, height, image=None, is_hovered=False):
     if image:
         if is_hovered:
             enlarged_image = pygame.transform.scale(
-                image, (280, 350))  
-            SCREEN.blit(enlarged_image, (x - 100, y - 200)) 
+                image, (280, 350))
+            SCREEN.blit(enlarged_image, (x - 100, y - 200))
         else:
             SCREEN.blit(image, (x, y))
 
@@ -78,7 +81,7 @@ def get_card_positions(start_x, y, hand, max_width=800, min_space=50, max_space=
         space = min(max_space, max(
             min_space, max_width // (len(hand) - 1)))
     else:
-        space = 0 
+        space = 0
     return [(start_x + i * space, y) for i in range(len(hand))]
 
 
@@ -104,12 +107,13 @@ def display_rules_screen():
         SCREEN.fill(BEIGE)
         for i, line in enumerate(rules_text):
             text_surface = font.render(line, True, BLACK)
-            SCREEN.blit(text_surface, (WIDTH // 2 - text_surface.get_width() // 2, 100 + i * 50))
-        
+            SCREEN.blit(text_surface, (WIDTH // 2 -
+                        text_surface.get_width() // 2, 100 + i * 50))
+
         pygame.draw.rect(SCREEN, BLUE, back_button)
         back_text = font.render("Back", True, BEIGE)
         SCREEN.blit(back_text, (back_button.x + 50, back_button.y + 10))
-        
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -117,7 +121,7 @@ def display_rules_screen():
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if back_button.collidepoint(event.pos):
                     return
-        
+
         pygame.display.update()
 
 
@@ -153,7 +157,7 @@ def display_home_screen():
                     2, HEIGHT // 4 + 10))
         SCREEN.blit(LOOSE, (WIDTH // 2 - LOOSE.get_width() //
                     2, HEIGHT // 4 + 100))
-        
+
         pygame.draw.rect(SCREEN, BLUE, play_button)
         pygame.draw.rect(SCREEN, BLUE, rules_button)
         pygame.draw.rect(SCREEN, BLUE, quit_button)
@@ -183,7 +187,6 @@ def display_home_screen():
         pygame.display.update()
 
 
-
 class Game():
 
     def __init__(self, deck_player: list, deck_computer: list, behaviour: int):
@@ -197,56 +200,29 @@ class Game():
             self.player.draw()
             self.computer.draw()
 
-    # def order(self):
-    #     choice = input("head or tails ?\n")
-    #     if choice == "head" or choice == "tails":
-    #         print("Flipping the coin")
-    #         coin = self.flip()
-    #         print(f"{coin} !")
-    #         if coin == choice:
-    #             print("You start")
-    #             return True
-    #         else:
-    #             print("The opponent starts")
-    #             return False
-    #     else:
-    #         return self.order()
-
-    # def playerTurn(self):
-    #     print("Your turn")
-    #     print("Choose a card")
-    #     card = int(input(f"{self.player.hand}\n"))
-    #     print(self.player.hand[card-1])
-
-    # def computerTurn(self):
-    #     print("The opponent's turn")
-    #     print("Choosing a card")
-    #     print(self.computer.choice())
-
-
     def use(self, user, card: Cards):
-            if card.id < 4 and card.id > 0:
-                for _ in range(card.id):
-                    if user == "player":
-                        self.player.draw()
-                    else:
-                        self.computer.draw()
+        if card.id < 4 and card.id > 0:
+            for _ in range(card.id):
+                if user == "player":
+                    self.player.draw()
+                else:
+                    self.computer.draw()
 
-            elif card.id > 3 and card.id < 6: 
-                for i in range(card.id - 3):
-                    if user == "player":
-                        self.computer.discard()
-                    else:
-                        self.player.discard()
+        elif card.id > 3 and card.id < 6:
+            for i in range(card.id - 3):
+                if user == "player":
+                    self.computer.discard()
+                else:
+                    self.player.discard()
 
-            elif card.id == 6:
-                pass 
+        elif card.id == 6:
+            pass
 
-            elif card.id == 7:
-                pass 
+        elif card.id == 7:
+            pass
 
-            elif card.id == 8: 
-                self.player.hand, self.computer.hand = self.computer.hand, self.player.hand
+        elif card.id == 8:
+            self.player.hand, self.computer.hand = self.computer.hand, self.player.hand
 
     def isHandEmpty(self):
         return self.player.hand == [] or self.computer == []
@@ -258,12 +234,12 @@ class Game():
         return "Hand : {}\n".format(self.player.hand)
 
 
-global back_image  
+global back_image
 card_images = load_card_images()
 back_image = pygame.transform.scale(load_back_image(), (120, 150))
 
 
-# deck 
+# deck
 starting_deck = []
 for i in range(9):
     starting_deck.append(Cards("nothing", 0, card_images[0]))
@@ -286,6 +262,7 @@ starting_deck.append(Cards("exchange", 8, card_images[8]))
 def launch_game():
     game = Game(starting_deck, starting_deck, 1)
     game.setup()
+
 
 font_menu = os.path.join(ASSETS, "SHOWG.TTF")
 back_button = pygame.Rect(WIDTH - 170, HEIGHT - 70, 140, 40)
@@ -384,7 +361,6 @@ def main():
                         middle_card = card_bot
 
         pygame.display.update()
-
 
 
 main()
