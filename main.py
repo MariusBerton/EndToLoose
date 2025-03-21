@@ -260,11 +260,6 @@ starting_deck.append(Cards("reveal", 7, card_images[7]))
 starting_deck.append(Cards("exchange", 8, card_images[8]))
 
 
-def launch_game():
-    game = Game(starting_deck, starting_deck, 1)
-    game.setup()
-
-
 font_menu = os.path.join(ASSETS, "SHOWG.TTF")
 back_button = pygame.Rect(WIDTH - 170, HEIGHT - 70, 140, 40)
 button_font = pygame.font.Font(font_menu, 50)
@@ -273,7 +268,6 @@ button_font = pygame.font.Font(font_menu, 50)
 
 
 def main():
-    display_home_screen()
 
     game = Game(starting_deck, starting_deck, 1)
     game.setup()
@@ -292,16 +286,25 @@ def main():
         SCREEN.blit(background_image, (0, 0))
 
         # Dessiner le bouton Back dynamiquement
-        back_text = button_font.render("Back", True, BEIGE)
-        back_width = back_text.get_width() + 20
-        back_height = 50
-        back_x = WIDTH - back_width - 20
-        back_y = HEIGHT - back_height - 20
-        back_button = pygame.Rect(back_x, back_y, back_width, back_height)
+        back_text, new_game_text = button_font.render(
+            "Back", True, BEIGE),  button_font.render("New Game", True, BEIGE)
+        back_width, new_game_width = back_text.get_width() + \
+            20, new_game_text.get_width() + 20
+        back_height, new_game_height = 50, 50
+        back_x, new_game_x = WIDTH - back_width - \
+            20, WIDTH - new_game_width - 20
+        back_y, new_game_y = HEIGHT - 2 * back_height - \
+            40, HEIGHT - new_game_height - 20
+        back_button, new_game_button = pygame.Rect(
+            back_x, back_y, back_width, back_height), pygame.Rect(new_game_x, new_game_y, new_game_width, new_game_height)
 
         pygame.draw.rect(SCREEN, BLUE, back_button)
         SCREEN.blit(back_text, (back_x + (back_width - back_text.get_width()) // 2,
                                 back_y + (back_height - back_text.get_height()) // 2))
+
+        pygame.draw.rect(SCREEN, BLUE, new_game_button)
+        SCREEN.blit(new_game_text, (new_game_x + (new_game_width - new_game_text.get_width()) // 2,
+                                    new_game_y + (new_game_height - new_game_text.get_height()) // 2))
 
         mouse_x, mouse_y = pygame.mouse.get_pos()
 
@@ -346,6 +349,8 @@ def main():
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if back_button.collidepoint(event.pos):
                     display_home_screen()
+                elif new_game_button.collidepoint(event.pos):
+                    main()
 
                 clicked_card = handle_card_click(
                     game.player.hand, player1slots)
@@ -364,4 +369,5 @@ def main():
         pygame.display.flip()
 
 
+display_home_screen()
 main()
