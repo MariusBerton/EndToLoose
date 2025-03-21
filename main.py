@@ -87,12 +87,12 @@ def get_card_positions(start_x, y, hand, max_width=800, min_space=50, max_space=
 
 def display_rules_screen():
     rules_text = [
-        "Rules of tthe game :",
-        "1. ",
-        "2. ",
-        "3. ",
-        "4. ",
-        "5. "
+        "Rules of the game :",
+        "1. Choose a card.",
+        "2. Apply it's effect.",
+        "3. Now it's your opponent's turn.",
+        "4. The first one to empty his hand loose.",
+        "5. Enjoy."
     ]
 
     font_menu = os.path.join(ASSETS, "SHOWG.TTF")
@@ -141,14 +141,14 @@ def display_home_screen():
     button_width = 200
     button_height = 60
 
-    new_game_button = pygame.Rect(
-        WIDTH // 2 + 150, HEIGHT // 2, button_width, button_height)
-    play_button = pygame.Rect(
-        WIDTH // 2 - 250, HEIGHT // 2, button_width, button_height)
+    button_spacing = 50  # Augmente l'espace horizontal entre les boutons
+
+    play_button = pygame.Rect(WIDTH // 2 - (button_width * 1.5) -
+                              button_spacing, HEIGHT // 2, button_width, button_height)
     rules_button = pygame.Rect(
-        WIDTH // 2 - 50, HEIGHT // 2, button_width, button_height)
-    quit_button = pygame.Rect(
-        WIDTH // 2 + 150, HEIGHT // 2, button_width, button_height)
+        WIDTH // 2 - (button_width // 2), HEIGHT // 2, button_width, button_height)
+    quit_button = pygame.Rect(WIDTH // 2 + (button_width * 0.5) +
+                              button_spacing, HEIGHT // 2, button_width, button_height)
 
     while True:
         SCREEN.blit(background_image, (0, 0))
@@ -165,7 +165,6 @@ def display_home_screen():
         pygame.draw.rect(SCREEN, BLUE, quit_button)
 
         button_font = pygame.font.Font(font_menu, 50)
-        NEW_GAME = button_font.render("New Game", True, BEIGE)
         PLAY = button_font.render("Play", True, BEIGE)
         RULES = button_font.render("Rules", True, BEIGE)
         QUIT = button_font.render("Quit", True, BEIGE)
@@ -293,26 +292,17 @@ def main():
         SCREEN.fill((0, 0, 0))
         SCREEN.blit(background_image, (0, 0))
 
-        # Dessiner le bouton Back et New Game dynamiquement
-        back_text, new_game_text = button_font.render(
-            "Back", True, BEIGE),  button_font.render("New Game", True, BEIGE)
-        back_width, new_game_width = back_text.get_width() + \
-            20, new_game_text.get_width() + 20
-        back_height, new_game_height = 50, 50
-        back_x, new_game_x = WIDTH - back_width - \
-            20, 10
-        back_y, new_game_y = HEIGHT - back_height - \
-            20, new_game_height
-        back_button, new_game_button = pygame.Rect(
-            back_x, back_y, back_width, back_height), pygame.Rect(new_game_x, new_game_y, new_game_width, new_game_height)
+        # Dessiner le bouton Back dynamiquement
+        back_text = button_font.render("Back", True, BEIGE)
+        back_width = back_text.get_width() + 20
+        back_height = 50
+        back_x = WIDTH - back_width - 20
+        back_y = HEIGHT - back_height - 20
+        back_button = pygame.Rect(back_x, back_y, back_width, back_height)
 
         pygame.draw.rect(SCREEN, BLUE, back_button)
         SCREEN.blit(back_text, (back_x + (back_width - back_text.get_width()) // 2,
                                 back_y + (back_height - back_text.get_height()) // 2))
-
-        pygame.draw.rect(SCREEN, BLUE, new_game_button)
-        SCREEN.blit(back_text, (new_game_x + (new_game_width - new_game_text.get_width()) // 2,
-                                new_game_y + (new_game_height - new_game_text.get_height()) // 2))
 
         mouse_x, mouse_y = pygame.mouse.get_pos()
 
