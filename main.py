@@ -269,7 +269,6 @@ button_font = pygame.font.Font(font_menu, 50)
 
 
 def main():
-    display_home_screen()
 
     game = Game(starting_deck, starting_deck, 1)
     game.setup()
@@ -351,8 +350,8 @@ def main():
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if back_button.collidepoint(event.pos):
                     display_home_screen()
-                # elif new_game_button.collidepoint(event.pos):
-                #     game.setup()
+                elif new_game_button.collidepoint(event.pos):
+                    main()
 
                 clicked_card = handle_card_click(
                     game.player.hand, player1slots)
@@ -371,4 +370,5 @@ def main():
         pygame.display.update()
 
 
+display_home_screen()
 main()
