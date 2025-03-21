@@ -356,6 +356,8 @@ def main():
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if back_button.collidepoint(event.pos):
                     display_home_screen()
+                elif new_game_button.collidepoint(event.pos):
+                    main()
 
                 clicked_card = handle_card_click(
                     game.player.hand, player1slots)
