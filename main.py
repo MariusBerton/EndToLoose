@@ -2,7 +2,7 @@ from Cards import Cards
 from Player import Player
 from Computer import Computer
 from time import sleep
-from random import shuffle, choice, randint
+from random import shuffle, randint
 import pygame
 import sys
 import os
