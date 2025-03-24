@@ -2,7 +2,7 @@ from Cards import Cards
 from Player import Player
 from Computer import Computer
 from time import sleep
-from random import shuffle, choice
+from random import shuffle, choice, randint
 import pygame
 import sys
 import os
@@ -211,42 +211,33 @@ def display_end_screen(message):
     display_home_screen()
 
 
-class Game():
+def setup(player, computer):
+    shuffle(player.deck)
+    shuffle(computer.deck)
+    for i in range(5):
+        player.draw()
+        computer.draw()
 
-    def __init__(self, deck_player: list, deck_computer: list, behaviour: int):
-        self.player = Player(deck_player)
-        self.computer = Computer(deck_computer, behaviour)
 
-    def setup(self):
-        shuffle(self.player.deck)
-        shuffle(self.computer.deck)
-        for i in range(5):
-            self.player.draw()
-            self.computer.draw()
-
-    def use(self, user, card: Cards):
-        if card.id < 4 and card.id > 0:
-            for _ in range(card.id):
-                if user == "player":
-                    self.player.draw()
-                else:
-                    self.computer.draw()
-
-        elif card.id > 3 and card.id < 6:
-            for i in range(card.id - 3):
-                if user == "player":
-                    self.computer.discard()
-                else:
-                    self.player.discard()
-
-        elif card.id == 6:
-            pass
-
-        elif card.id == 7:
-            pass
-
-        elif card.id == 8:
-            self.player.hand, self.computer.hand = self.computer.hand, self.player.hand
+def use(player, computer, user: bool, card: Cards):
+    if card.id < 4 and card.id > 0:
+        for _ in range(card.id):
+            if user == True:
+                player.draw()
+            else:
+                computer.draw()
+    elif card.id > 3 and card.id < 6:
+        for i in range(card.id - 3):
+            if user == True:
+                computer.discard()
+            else:
+                player.discard()
+    elif card.id == 6:
+        pass
+    elif card.id == 7:
+        pass
+    elif card.id == 8:
+        player.hand, computer.hand = computer.hand, player.hand
 
     def isHandEmpty(self):
         return self.player.hand == [] or self.computer == []
@@ -286,11 +277,12 @@ button_font = pygame.font.Font(font_menu, 50)
 
 def main():
 
-    game = Game(starting_deck, starting_deck, 1)
-    game.setup()
+    player = Player(starting_deck)
+    computer = Computer(starting_deck, randint(1, 3))
+    setup(player, computer)
 
-    player1slots = get_card_positions(280, 520, game.computer.hand)
-    player2slots = get_card_positions(280, 50, game.player.hand)
+    player1slots = get_card_positions(280, 520, computer.hand)
+    player2slots = get_card_positions(280, 50, player.hand)
 
     middle_slot = (585, 300)
     middle_card = None
@@ -325,11 +317,11 @@ def main():
         mouse_x, mouse_y = pygame.mouse.get_pos()
 
         draw_card_slot(1100, 50, 120, 150, image=back_image)
-        if len(game.player.hand) > 0:
+        if len(player.hand) > 0:
             player2slots = [(280 + i * 50, 50)
-                            for i in range(len(game.player.hand))]
+                            for i in range(len(player.hand))]
 
-        for i, _ in enumerate(game.player.hand):
+        for i, _ in enumerate(player.hand):
             is_hovered = pygame.Rect(
                 player2slots[i][0], player2slots[i][1], 120, 150).collidepoint(mouse_x, mouse_y)
             draw_card_slot(player2slots[i][0], player2slots[i][1],
@@ -340,7 +332,7 @@ def main():
                            120, 150, image=middle_card.image)
 
         draw_card_slot(60, 520, 120, 150, image=back_image)
-        for i, carte in enumerate(game.computer.hand):
+        for i, carte in enumerate(computer.hand):
             is_hovered = pygame.Rect(
                 player1slots[i][0], player1slots[i][1], 120, 150).collidepoint(mouse_x, mouse_y)
             draw_card_slot(player1slots[i][0], player1slots[i][1],
@@ -358,11 +350,11 @@ def main():
                         return hand.pop(i)
             return None
 
-        if not game.player.hand:
+        if not player.hand:
             display_end_screen("You Win!")
             return
 
-        elif not game.computer.hand:
+        elif not computer.hand:
             display_end_screen("You Loose!")
             return
 
@@ -377,17 +369,17 @@ def main():
                     main()
 
                 clicked_card = handle_card_click(
-                    game.player.hand, player1slots)
+                    player.hand, player1slots)
                 if clicked_card:
-                    game.use("player", clicked_card)
+                    use(player, computer, True, clicked_card)
                     middle_card = clicked_card
 
                     pygame.display.update()
                     pygame.time.delay(500)
                     card_bot = handle_card_click(
-                        game.computer.hand, player1slots)
+                        computer.hand, player1slots)
                     if card_bot:
-                        game.use("computer", card_bot)
+                        use(player, computer, False, card_bot)
                         middle_card = card_bot
 
         pygame.display.flip()
