@@ -302,7 +302,6 @@ def main():
         SCREEN.fill((0, 0, 0))
         SCREEN.blit(background_image, (0, 0))
 
-
         back_text, new_game_text = button_font.render(
             "Back", True, BEIGE),  button_font.render("New Game", True, BEIGE)
         back_width, new_game_width = back_text.get_width() + \
@@ -358,7 +357,7 @@ def main():
                     if i < len(hand):
                         return hand.pop(i)
             return None
-        
+
         if not game.player.hand:
             display_end_screen("You Win!")
             return
