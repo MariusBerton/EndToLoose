@@ -30,6 +30,5 @@ class Computer:
                 if card.id == 2 or card.id == 3:
                     card.use()
                     return card.discard()
-        else:
-            card = self.hand[randint(0, len(self.hand)-1)]
-            return card.use()
+        card = self.hand[randint(0, len(self.hand)-1)]
+        return card.use()
